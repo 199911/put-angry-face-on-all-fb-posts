@@ -22,9 +22,19 @@ var show_emotion_bar = function() {
 
 var put_angry_face_on_all_post = function() {
     var angry_icons = $$('._39m[data-reaction="8"]');
-    for(var i = 0; i < angry_icons.length; ++i){
-        $$('._39m[data-reaction="8"]')[i].click();
-    }
+    var cnt = 0;
+    var action_id = setInterval(
+        function(){ 
+            if (cnt < angry_icons.length){
+                console.log(angry_icons[cnt]);
+                angry_icons[cnt].click();
+                cnt += 1;
+            } else {
+                clearInterval(action_id);
+            }
+        }, 
+        1000
+    );
 }
 
 var cancel_all_emotion_on_post = function(){
