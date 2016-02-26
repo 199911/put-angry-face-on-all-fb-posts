@@ -13,6 +13,13 @@ var scroll_to_bottom_feed = function() {
     );
 }
 
+var show_emotion_bar = function() {
+    var emontion_bar_parent = $$('.uiContextualLayerParent ._khz > div');
+    for (var i = 0; i < emontion_bar_parent.length; ++i) {
+        emontion_bar_parent[i].className = "_1oxj _10ir";
+    }
+}
+
 var put_angry_face_on_all_post = function() {
     var angry_icons = $$('._39m[data-reaction="8"]');
     for(var i = 0; i < angry_icons.length; ++i){
@@ -20,7 +27,7 @@ var put_angry_face_on_all_post = function() {
     }
 }
 
-var cancel_all_action_on_post = function(){
+var cancel_all_emotion_on_post = function(){
     var cancel_btns = $$('a.UFILikeLink.UFILinkBright');
     for(var i = 0; i < cancel_btns.length; ++i){
         $$('a.UFILikeLink.UFILinkBright')[i].click();
