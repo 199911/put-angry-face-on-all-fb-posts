@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Autolike",
-  "description": "This give reaction to all post in current facebook page",
-  "version": "0.1",
+  "name": "Facebook Auto Angry",
+  "description": "This give angry reaction to all posts in current facebook page",
+  "version": "0.2",
 
   "browser_action": {
     "default_popup": "popup.html"
