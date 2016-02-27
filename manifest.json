@@ -11,7 +11,7 @@
 
   "content_scripts" : [
     {
-      "js" : [ "put-angry-icon.js"],
+      "js" : [ "jquery-2.2.1.min.js", "put-angry-icon.js"],
       "matches": [ "http://*/*", "https://*/*"]
     }
   ]
