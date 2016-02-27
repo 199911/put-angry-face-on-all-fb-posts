@@ -6,18 +6,10 @@ function send(action) {
     });
 }
 document.addEventListener('DOMContentLoaded', function() {
-    var btns = document.querySelectorAll('button');
-    console.log(btns);
-    for( var i = 0; i < btns.length; ++i) {
-        console.log(i);
-        btns[i].addEventListener(
-            'click', 
-            function(){
-                console.log('clicked');
-                var action = this.getAttribute('data-action');
-                console.log( action );
-                send(action);
-            }
-        );
-    }
+    var body = document.querySelectorAll('body')[0];
+    body.addEventListener('click', function(e){
+        var action = e.target.getAttribute('data-action');
+        console.log( action );
+        send(action);
+    });
 });

@@ -35,9 +35,23 @@ var click_btn_on_all_post_one_by_one = function(icons) {
     );
 }
 
-var put_angry_face_on_all_post = function() {
-    var angry_icons = $('._39m[data-reaction="8"]');
-    click_btn_on_all_post_one_by_one(angry_icons);
+var put_reaction_on_all_post = function(emotion) {
+    var reaction;
+    if (emotion === 'like') {
+        reaction = 1;
+    } else if (emotion === 'love') {
+        reaction = 2;
+    } else if (emotion === 'haha') {
+        reaction = 4;
+    } else if (emotion === 'wow') {
+        reaction = 3;
+    } else if (emotion === 'sad') {
+        reaction = 7;
+    } else if (emotion === 'angry') {
+        reaction = 8;
+    }
+    var icons = $('._39m[data-reaction="'+reaction+'"]');
+    click_btn_on_all_post_one_by_one(icons);
 }
 
 var cancel_all_emotion_on_post = function(){
@@ -52,9 +66,9 @@ chrome.runtime.onMessage.addListener(
             scroll_to_bottom_feed();
         } else if (request.action == "show") {
             show_emotion_bar();
-        } else if (request.action == "angry") {
-            put_angry_face_on_all_post();
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
+        } else {
+            put_reaction_on_all_post(request.action);
         }
 });
