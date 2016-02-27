@@ -1,5 +1,5 @@
 var scroll_to_bottom_feed = function() {
-    var position_y = 0;
+    var position_y = -1;
     var scroll_action_id = setInterval(
         function(){ 
             if (position_y !== scrollY){
@@ -44,3 +44,17 @@ var cancel_all_emotion_on_post = function(){
     var cancel_btns = $$('a.UFILikeLink.UFILinkBright');
     click_btn_on_all_post_one_by_one(cancel_btns);
 }
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(request);
+        if (request.action == "scroll") {
+            scroll_to_bottom_feed();
+        } else if (request.action == "show") {
+            show_emotion_bar();
+        } else if (request.action == "angry") {
+            put_angry_face_on_all_post();
+        } else if (request.action == "cancel") {
+            cancel_all_emotion_on_post();
+        }
+});;
