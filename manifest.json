@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "Autolike",
+  "description": "This give reaction to all post in current facebook page",
+  "version": "0.1",
+
+  "browser_action": {
+  },
+
+  "content_scripts" : [
+    {
+      "js" : [ "put-angry-icon.js"],
+      "matches": [ "http://*/*", "https://*/*"]
+    }
+  ]
+}
