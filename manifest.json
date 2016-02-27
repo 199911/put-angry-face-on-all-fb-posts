@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "Facebook Auto Angry",
-  "description": "This give angry reaction to all posts in current facebook page",
-  "version": "0.2",
+  "description": "This give reaction to all posts in current facebook page",
+  "version": "1.0",
 
   "browser_action": {
     "default_popup": "popup.html",
