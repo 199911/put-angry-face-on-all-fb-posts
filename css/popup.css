@@ -1,0 +1,13 @@
+html {
+    font-family: GillSans, Calibri, Trebuchet, sans-serif;
+}
+
+body {
+    width: 210px;
+}
+
+.buttons .btn {
+    width:100%;
+    color:white;
+    background-color: #2196f3;
+}

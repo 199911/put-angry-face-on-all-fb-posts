@@ -1,18 +1,30 @@
 <html>
 <head>
     <title>Options Auto Like</title>
+    <link rel="stylesheet" type="text/css" href="css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
 </head>
 <body>
-    <h1>Actions</h1>
-    <button data-action="scroll">Scroll To Bottom</button>
-    <button data-action="show">Show all reaction bars</button>
-    <button data-action="like">Put like on all feed</button>
-    <button data-action="love">Put love on all feed</button>
-    <button data-action="haha">Put haha on all feed</button>
-    <button data-action="wow">Put wow on all feed</button>
-    <button data-action="sad">Put sad on all feed</button>
-    <button data-action="angry">Put angry on all feed</button>
-    <button data-action="cancel">Cancel all reaction</button>
+    <div class="container">
+        <header>
+        <h5>Auto Angry</h5>
+        </header>
+        <div class="buttons">
+            <hr/>
+            <button class="btn" data-action="scroll">Scroll To Bottom</button>
+            <button class="btn" data-action="show">Show all reaction bars</button>
+            <hr/>
+            <button class="btn blue" data-action="like">Put like on all feed</button>
+            <button class="btn pink" data-action="love">Put love on all feed</button>
+            <button class="btn amber darken-1" data-action="haha">Put haha on all feed</button>
+            <button class="btn orange darken-1" data-action="wow">Put wow on all feed</button>
+            <button class="btn indigo" data-action="sad">Put sad on all feed</button>
+            <button class="btn red" data-action="angry">Put angry on all feed</button>
+            <hr/>
+            <button class="btn" data-action="cancel">Cancel all reaction</button>
+        </div>
+        <footer><p></p></footer>
+    </div>
 </body>
 <script src="popup.js"></script>
 </html>
