@@ -13,3 +13,12 @@
 ## Note
 If you want to cancell the reaction, you can call `cancel_all_emotion_on_post()`
 The reaction will be cancel one by one in every second.
+
+## Contribute 
+
+We have following task, feel free to create a pull request
+1. Update the README.md to have instruction on the chrome extension
+2. Improve the UI of the extension pop up
+3. Trigger the emotion bar automatically, manual trigger on reaction bar is required in current version
+4. Add stop scrolling function
+5. Prevent too much event is fired, otherwise facebook will warn the user and ban the action
