@@ -69,6 +69,58 @@ chrome.runtime.onMessage.addListener(
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
         } else {
+            create_popup();
             put_reaction_on_all_post(request.action);
         }
 });
+
+var create_popup = function(){
+    var $first_like_btn = $($('a.UFILikeLink._48-k')[0]);
+    $first_like_btn.css('position', 'fixed');
+    var center = {
+        left: window.innerWidth/2,
+        top: window.innerHeight/2
+    };
+    var meta = {
+        width: 500,
+        height: 300
+    } 
+    meta.left = center.left - (meta.width-10) / 2;
+    meta.top = center.top - (meta.height-10) / 2;
+    $first_like_btn.css('left', meta.left);
+    $first_like_btn.css('top', meta.top);
+    $first_like_btn.css('width', (meta.width) + 'px');
+    $first_like_btn.css('height', (meta.height) + 'px');
+    var popup = document.createElement("div"); 
+    popup.id = "ext-pop-up";
+    var message = document.createElement("h1");
+    message.appendChild(
+        document.createTextNode("Do you want to fire reaction?")
+    );
+    var yes_btn = document.createElement("button");
+    yes_btn.id = "yes_btn";
+    yes_btn.appendChild(
+        document.createTextNode("Yes")
+    );
+    var no_btn = document.createElement("button");
+    no_btn.id = "no_btn";
+    no_btn.appendChild(
+        document.createTextNode("No")
+    );
+    $first_like_btn.prepend(popup);
+    popup.appendChild(message);
+    popup.appendChild(yes_btn);
+    popup.appendChild(no_btn);
+    $div = $('#ext-pop-up');
+    $div.css('position', 'fixed');
+    $div.css('top', meta.top);
+    $div.css('left', meta.left);
+    $div.css('width', meta.width + 'px');
+    $div.css('height', meta.height + 'px');
+    $div.css('background','white');
+    $div.css('z-index','99999');
+    $div.click(function(){
+        return false;
+    })
+    console.log($div);
+}
