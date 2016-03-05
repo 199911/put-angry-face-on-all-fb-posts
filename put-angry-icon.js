@@ -14,7 +14,7 @@ var scroll_to_bottom_feed = function() {
 }
 
 var show_emotion_bar = function() {
-    var emontion_bar_parent = $('.uiContextualLayerParent ._khz > div');
+    var emontion_bar_parent = $('.uiContextualLayerParent._khz > div');
     for (var i = 0; i < emontion_bar_parent.length; ++i) {
         emontion_bar_parent[i].className = "_1oxj _10ir";
     }
@@ -70,7 +70,7 @@ chrome.runtime.onMessage.addListener(
             cancel_all_emotion_on_post();
         } else {
             create_popup();
-            put_reaction_on_all_post(request.action);
+            // put_reaction_on_all_post(request.action);
         }
 });
 
@@ -122,5 +122,14 @@ var create_popup = function(){
     $div.click(function(){
         return false;
     })
-    console.log($div);
+    $div.mouseenter(function(){
+        window.setTimeout(
+        function(){
+            var $emontion_bar_parent = $('.uiContextualLayerParent._khz > div');
+            $emontion_bar_parent.css('position', 'fixed');
+            $emontion_bar_parent.css('top', 200);
+            $emontion_bar_parent.css('left', 500);
+            $emontion_bar_parent.css('z-index', 0);
+        },1000);
+    });
 }
