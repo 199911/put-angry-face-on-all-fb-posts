@@ -75,6 +75,62 @@ chrome.runtime.onMessage.addListener(
 });
 
 var create_popup = function(){
+
+    var reaction_bar; // reaction bar is create iff user hover on like button
+
+    // Get and create elements
+    var like_btn = document.querySelector('a.UFILikeLink._48-k');
+    var popup = document.createElement("div"); 
+    var message = document.createElement("h1");
+    message.appendChild(
+        document.createTextNode("Do you want to fire reaction?")
+    );
+    var yes_btn = document.createElement("button");
+    yes_btn.appendChild(
+        document.createTextNode("Yes")
+    );
+    var no_btn = document.createElement("button");
+    no_btn.appendChild(
+        document.createTextNode("No")
+    );
+
+    // Define and register event listener
+    popup.addEventListener("click", function(event){
+        event.stopPropagation();
+        event.preventDefault();
+    });
+    var delete_popup = function(){
+        like_btn.style = '';
+        like_btn.removeChild(popup);
+        reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
+        if (reaction_bar) {
+            reaction_bar.style = '';
+        }
+    };
+    no_btn.addEventListener("click", delete_popup);
+    yes_btn.addEventListener("click", delete_popup);
+    popup.addEventListener("mouseenter", function(){
+        // hide reaction bar
+        window.setTimeout( function(){
+            reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
+            var style = {
+                'z-index': -1
+            }
+            var cssText = '';
+            for (key in style) {
+                cssText += key+': '+style[key]+'; ';
+            }
+            reaction_bar.setAttribute('style', cssText);
+        },100); // wait a while to make sure reaction bar is created
+    });
+
+    // Append elements
+    like_btn.insertBefore(popup, like_btn.firstChild);
+    popup.appendChild(message);
+    popup.appendChild(yes_btn);
+    popup.appendChild(no_btn);
+
+    // prepare and set CSS
     const width = 500;
     const height = 300;
     var style = {
@@ -84,16 +140,13 @@ var create_popup = function(){
         'width': width + 'px',
         'height': height + 'px'
     };
-    var like_btn = document.querySelector('a.UFILikeLink._48-k');
     var cssText = '';
     for (key in style) {
         cssText += key+': '+style[key]+'; ';
     }
     like_btn.setAttribute('style', cssText);
-    var popup = document.createElement("div"); 
-    popup.id = "ext-pop-up";
     popup_new_style = {
-        'cursor': 'pointer',
+        'cursor': 'default',
         'background': 'white',
         'z-index': 1000
     };
@@ -101,45 +154,4 @@ var create_popup = function(){
         cssText += key+': '+popup_new_style[key]+'; ';
     }
     popup.setAttribute('style', cssText);
-    popup.addEventListener("click", function(){
-        return false;
-    })
-    var message = document.createElement("h1");
-    message.appendChild(
-        document.createTextNode("Do you want to fire reaction?")
-    );
-    var yes_btn = document.createElement("button");
-    yes_btn.id = "yes_btn";
-    yes_btn.appendChild(
-        document.createTextNode("Yes")
-    );
-    var no_btn = document.createElement("button");
-    no_btn.id = "no_btn";
-    no_btn.appendChild(
-        document.createTextNode("No")
-    );
-    like_btn.appendChild(popup);
-    popup.appendChild(message);
-    popup.appendChild(yes_btn);
-    popup.appendChild(no_btn);
-    var delete_popup = function(){
-        like_btn.removeChild(popup);
-        like_btn.style = '';
-        var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-        reaction_bar.style = '';
-    };
-    no_btn.addEventListener("click", delete_popup);
-    yes_btn.addEventListener("click", delete_popup);
-    popup.addEventListener("mouseenter", function(){
-        window.setTimeout(
-        function(){
-            var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-            reaction_bar.style = {
-                'position': 'fixed',
-                'top': 200,
-                'left': 500,
-                'z-index': -1
-            }
-        },500);
-    });
 }
