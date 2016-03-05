@@ -75,24 +75,35 @@ chrome.runtime.onMessage.addListener(
 });
 
 var create_popup = function(){
-    var center = {
-        left: window.innerWidth/2,
-        top: window.innerHeight/2
+    const width = 500;
+    const height = 300;
+    var style = {
+        'position': 'fixed',
+        'left': (window.innerWidth - width) / 2 + 'px',
+        'top': (window.innerHeight - height) / 2 + 'px',
+        'width': width + 'px',
+        'height': height + 'px'
     };
-    var meta = {
-        width: 500,
-        height: 300
-    } 
-    meta.left = center.left - (meta.width-10) / 2;
-    meta.top = center.top - (meta.height-10) / 2;
-    var $first_like_btn = $($('a.UFILikeLink._48-k')[0]);
-    $first_like_btn.css('position', 'fixed');
-    $first_like_btn.css('left', meta.left);
-    $first_like_btn.css('top', meta.top);
-    $first_like_btn.css('width', (meta.width) + 'px');
-    $first_like_btn.css('height', (meta.height) + 'px');
+    var like_btn = document.querySelector('a.UFILikeLink._48-k');
+    var cssText = '';
+    for (key in style) {
+        cssText += key+': '+style[key]+'; ';
+    }
+    like_btn.setAttribute('style', cssText);
     var popup = document.createElement("div"); 
     popup.id = "ext-pop-up";
+    popup_new_style = {
+        'cursor': 'pointer',
+        'background': 'white',
+        'z-index': 1000
+    };
+    for (key in popup_new_style) {
+        cssText += key+': '+popup_new_style[key]+'; ';
+    }
+    popup.setAttribute('style', cssText);
+    popup.addEventListener("click", function(){
+        return false;
+    })
     var message = document.createElement("h1");
     message.appendChild(
         document.createTextNode("Do you want to fire reaction?")
@@ -107,46 +118,28 @@ var create_popup = function(){
     no_btn.appendChild(
         document.createTextNode("No")
     );
-    var delete_popup = function(){
-        var like_btn = $first_like_btn[0];
-        like_btn.removeChild(popup);
-        like_btn.style.position = '';
-        like_btn.style.left = '';
-        like_btn.style.top = '';
-        like_btn.style.width = '';
-        like_btn.style.height = '';
-        var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-        console.log(reaction_bar);
-        reaction_bar.style.position = '';
-        reaction_bar.style.left = '';
-        reaction_bar.style.top = '';
-        reaction_bar.style['z-index'] = '';
-    };
-    no_btn.addEventListener("click", delete_popup);
-    yes_btn.addEventListener("click", delete_popup);
-    $first_like_btn.prepend(popup);
+    like_btn.appendChild(popup);
     popup.appendChild(message);
     popup.appendChild(yes_btn);
     popup.appendChild(no_btn);
-    $div = $('#ext-pop-up');
-    $div.css('position', 'fixed');
-    $div.css('top', meta.top);
-    $div.css('left', meta.left);
-    $div.css('width', meta.width + 'px');
-    $div.css('height', meta.height + 'px');
-    $div.css('background','white');
-    $div.css('z-index','99999');
-    $div.click(function(){
-        return false;
-    })
-    $div.mouseenter(function(){
+    var delete_popup = function(){
+        like_btn.removeChild(popup);
+        like_btn.style = '';
+        var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
+        reaction_bar.style = '';
+    };
+    no_btn.addEventListener("click", delete_popup);
+    yes_btn.addEventListener("click", delete_popup);
+    popup.addEventListener("mouseenter", function(){
         window.setTimeout(
         function(){
-            var $emontion_bar_parent = $('.uiContextualLayerParent._khz > div');
-            $emontion_bar_parent.css('position', 'fixed');
-            $emontion_bar_parent.css('top', 200);
-            $emontion_bar_parent.css('left', 500);
-            $emontion_bar_parent.css('z-index', -1);
+            var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
+            reaction_bar.style = {
+                'position': 'fixed',
+                'top': 200,
+                'left': 500,
+                'z-index': -1
+            }
         },500);
     });
 }
