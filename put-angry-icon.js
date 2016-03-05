@@ -75,8 +75,6 @@ chrome.runtime.onMessage.addListener(
 });
 
 var create_popup = function(){
-    var $first_like_btn = $($('a.UFILikeLink._48-k')[0]);
-    $first_like_btn.css('position', 'fixed');
     var center = {
         left: window.innerWidth/2,
         top: window.innerHeight/2
@@ -87,6 +85,8 @@ var create_popup = function(){
     } 
     meta.left = center.left - (meta.width-10) / 2;
     meta.top = center.top - (meta.height-10) / 2;
+    var $first_like_btn = $($('a.UFILikeLink._48-k')[0]);
+    $first_like_btn.css('position', 'fixed');
     $first_like_btn.css('left', meta.left);
     $first_like_btn.css('top', meta.top);
     $first_like_btn.css('width', (meta.width) + 'px');
@@ -107,6 +107,23 @@ var create_popup = function(){
     no_btn.appendChild(
         document.createTextNode("No")
     );
+    var delete_popup = function(){
+        var like_btn = $first_like_btn[0];
+        like_btn.removeChild(popup);
+        like_btn.style.position = '';
+        like_btn.style.left = '';
+        like_btn.style.top = '';
+        like_btn.style.width = '';
+        like_btn.style.height = '';
+        var reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
+        console.log(reaction_bar);
+        reaction_bar.style.position = '';
+        reaction_bar.style.left = '';
+        reaction_bar.style.top = '';
+        reaction_bar.style['z-index'] = '';
+    };
+    no_btn.addEventListener("click", delete_popup);
+    yes_btn.addEventListener("click", delete_popup);
     $first_like_btn.prepend(popup);
     popup.appendChild(message);
     popup.appendChild(yes_btn);
@@ -129,7 +146,7 @@ var create_popup = function(){
             $emontion_bar_parent.css('position', 'fixed');
             $emontion_bar_parent.css('top', 200);
             $emontion_bar_parent.css('left', 500);
-            $emontion_bar_parent.css('z-index', 0);
-        },1000);
+            $emontion_bar_parent.css('z-index', -1);
+        },500);
     });
 }
