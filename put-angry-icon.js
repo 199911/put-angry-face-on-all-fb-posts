@@ -13,8 +13,9 @@ var scroll_to_bottom_feed = function() {
     );
 }
 
+// not working now
 var show_emotion_bar = function() {
-    var emontion_bar_parent = $('.uiContextualLayerParent._khz > div');
+    var emontion_bar_parent = $('._khz > div');
     for (var i = 0; i < emontion_bar_parent.length; ++i) {
         emontion_bar_parent[i].className = "_1oxj _10ir";
     }
@@ -88,6 +89,11 @@ var create_popup = function(){
 
     // Get and create elements
     var like_btn = document.querySelector('a.UFILikeLink._48-k');
+    var like_btn_span = document.querySelector('a.UFILikeLink._48-k').parentNode.parentNode
+    var like_btn_span_clone = like_btn_span.cloneNode(true);
+    var response_btn_panel = like_btn_span.parentNode;
+    // duplicate the like_btn_span to fill in a hole
+    response_btn_panel.insertBefore(like_btn_span_clone,response_btn_panel.firstChild);
     var popup = document.createElement("div"); 
     var message = document.createElement("h1");
     message.appendChild(
@@ -110,7 +116,9 @@ var create_popup = function(){
     });
     var delete_popup = function(){
         like_btn.style = '';
+        like_btn_span = '';
         like_btn.removeChild(popup);
+        response_btn_panel.removeChild(like_btn_span_clone);
     };
     no_btn.addEventListener("click", delete_popup);
     yes_btn.addEventListener("click", delete_popup);
@@ -123,6 +131,10 @@ var create_popup = function(){
     btn_panel.appendChild(no_btn);
 
     // prepare and set CSS
+    var like_btn_span_style = cssToStyleString({
+        'position' : 'fixed'
+    });
+    like_btn_span.setAttribute('style', like_btn_span_style);
     // facebook button style
     yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft"; 
     no_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
@@ -150,13 +162,17 @@ var create_popup = function(){
     popup.className = '_4-u2 mbm _5v3q _4-u8';
     popup.setAttribute('style', popup_style);
     var message_style = cssToStyleString({
+        'position' : 'relative',
         'margin' : '20px 0',
-        'text-align' : 'center'
+        'text-align' : 'center',
+        'z-index': 1000
     });
     message.setAttribute('style', message_style);
     var btn_panel_style = cssToStyleString({
+        'position' : 'relative',
         'margin' : '30px 0',
-        'text-align' : 'center'
+        'text-align' : 'center',
+        'z-index': 1000
     });
     btn_panel.setAttribute('style', btn_panel_style);
 }
