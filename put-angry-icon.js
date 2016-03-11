@@ -111,23 +111,9 @@ var create_popup = function(){
     var delete_popup = function(){
         like_btn.style = '';
         like_btn.removeChild(popup);
-        reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-        if (reaction_bar) {
-            reaction_bar.style = '';
-        }
     };
     no_btn.addEventListener("click", delete_popup);
     yes_btn.addEventListener("click", delete_popup);
-    popup.addEventListener("mouseenter", function(){
-        // hide reaction bar
-        window.setTimeout( function(){
-            reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-            var reaction_bar_style = cssToStyleString({
-                'z-index': -1
-            });
-            reaction_bar.setAttribute('style', reaction_bar_style);
-        },100); // wait a while to make sure reaction bar is created
-    });
 
     // Append elements
     like_btn.insertBefore(popup, like_btn.firstChild);
