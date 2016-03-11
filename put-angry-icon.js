@@ -74,6 +74,14 @@ chrome.runtime.onMessage.addListener(
         }
 });
 
+var cssToStyleString = function(cssObj) {
+    var styleString = '';
+    for (key in cssObj) {
+        styleString += key+': '+cssObj[key]+'; ';
+    }
+    return styleString;
+}
+
 var create_popup = function(){
 
     var reaction_bar; // reaction bar is create iff user hover on like button
@@ -85,6 +93,7 @@ var create_popup = function(){
     message.appendChild(
         document.createTextNode("Do you want to fire reaction?")
     );
+    var btn_panel = document.createElement("div");
     var yes_btn = document.createElement("button");
     yes_btn.appendChild(
         document.createTextNode("Yes")
@@ -113,45 +122,55 @@ var create_popup = function(){
         // hide reaction bar
         window.setTimeout( function(){
             reaction_bar = document.querySelector('.uiContextualLayerParent > .accessible_elem');
-            var style = {
+            var reaction_bar_style = cssToStyleString({
                 'z-index': -1
-            }
-            var cssText = '';
-            for (key in style) {
-                cssText += key+': '+style[key]+'; ';
-            }
-            reaction_bar.setAttribute('style', cssText);
+            });
+            reaction_bar.setAttribute('style', reaction_bar_style);
         },100); // wait a while to make sure reaction bar is created
     });
 
     // Append elements
     like_btn.insertBefore(popup, like_btn.firstChild);
     popup.appendChild(message);
-    popup.appendChild(yes_btn);
-    popup.appendChild(no_btn);
+    popup.appendChild(btn_panel);
+    btn_panel.appendChild(yes_btn);
+    btn_panel.appendChild(no_btn);
 
     // prepare and set CSS
-    const width = 500;
-    const height = 300;
-    var style = {
+    // facebook button style
+    yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft"; 
+    no_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
+    const width = 300;
+    const height = 100;
+    var like_btn_style = cssToStyleString({
         'position': 'fixed',
         'left': (window.innerWidth - width) / 2 + 'px',
         'top': (window.innerHeight - height) / 2 + 'px',
         'width': width + 'px',
         'height': height + 'px'
-    };
-    var cssText = '';
-    for (key in style) {
-        cssText += key+': '+style[key]+'; ';
-    }
-    like_btn.setAttribute('style', cssText);
-    popup_new_style = {
+    });
+    like_btn.setAttribute('style', like_btn_style);
+    var popup_style = cssToStyleString({
+        'position': 'fixed',
+        'left': (window.innerWidth - width) / 2 + 'px',
+        'top': (window.innerHeight - height) / 2 + 'px',
+        'width': width + 'px',
+        'height': height + 'px',
+        'padding' : '40px',
         'cursor': 'default',
         'background': 'white',
         'z-index': 1000
-    };
-    for (key in popup_new_style) {
-        cssText += key+': '+popup_new_style[key]+'; ';
-    }
-    popup.setAttribute('style', cssText);
+    });
+    popup.className = '_4-u2 mbm _5v3q _4-u8';
+    popup.setAttribute('style', popup_style);
+    var message_style = cssToStyleString({
+        'margin' : '20px 0',
+        'text-align' : 'center'
+    });
+    message.setAttribute('style', message_style);
+    var btn_panel_style = cssToStyleString({
+        'margin' : '30px 0',
+        'text-align' : 'center'
+    });
+    btn_panel.setAttribute('style', btn_panel_style);
 }
