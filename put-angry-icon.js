@@ -13,51 +13,63 @@ var scroll_to_bottom_feed = function() {
     );
 }
 
-// not working now
-var show_emotion_bar = function() {
-    var emontion_bar_parent = $('._khz > div');
-    for (var i = 0; i < emontion_bar_parent.length; ++i) {
-        emontion_bar_parent[i].className = "_1oxj _10ir";
-    }
-}
-
-var click_btn_on_all_post_one_by_one = function(icons) {
-    var cnt = 0;
+var do_action_every_second = function(action) {
     var action_id = setInterval(
-        function(){ 
-            if (cnt < icons.length){
-                icons[cnt].click();
-                cnt += 1;
-            } else {
-                clearInterval(action_id);
-            }
-        }, 
+        action, 
         1000
     );
+    return action_id;
 }
 
-var put_reaction_on_all_post = function(emotion) {
-    var reaction;
-    if (emotion === 'like') {
-        reaction = 1;
-    } else if (emotion === 'love') {
-        reaction = 2;
-    } else if (emotion === 'haha') {
-        reaction = 4;
-    } else if (emotion === 'wow') {
-        reaction = 3;
-    } else if (emotion === 'sad') {
-        reaction = 7;
-    } else if (emotion === 'angry') {
-        reaction = 8;
+var create_put_reaction_action = function(reaction_id) {
+    var all_like_btns = document.querySelectorAll('a.UFILikeLink._48-k');
+    var cnt = 0;
+    return function() {
+        var feed = closest_parent_with_class(all_like_btns[cnt], '_4-u2');
+        feed.scrollIntoView();
+        var reaction_panel = feed.querySelector('._1oxj.uiLayer');
+        var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
+        setTimeout(
+            function(){
+                reactions[reaction_id].click();
+            },
+            300
+        );
+        cnt += 1;
+        if (cnt > all_like_btns.length) {
+            clearInterval(action_id);
+        }
+    };
+}
+
+var put_reaction_on_all_post = function(reaction) {
+    if (reaction === 'like') {
+        reaction_id = 0;
+    } else if (reaction === 'love') {
+        reaction_id = 1;
+    } else if (reaction === 'haha') {
+        reaction_id = 2;
+    } else if (reaction === 'wow') {
+        reaction_id = 3;
+    } else if (reaction === 'sad') {
+        reaction_id = 4;
+    } else if (reaction === 'angry') {
+        reaction_id = 5;
     }
-    var icons = $('._39m[data-reaction="'+reaction+'"]');
-    click_btn_on_all_post_one_by_one(icons);
+    var put_reaction_action = create_put_reaction_action(reaction_id);
+    do_action_every_second(put_reaction_action);
 }
 
 var cancel_all_emotion_on_post = function(){
     var cancel_btns = $('a.UFILikeLink.UFILinkBright');
-    click_btn_on_all_post_one_by_one(cancel_btns);
+    var cnt = 0;
+    var action_id = do_action_every_second(function() {
+        cancel_btns[cnt].click();
+        cnt += 1;
+        if (cnt > cancel_btns.length) {
+            clearInterval(action_id);
+        }
+    });
 }
 
 chrome.runtime.onMessage.addListener(
@@ -75,7 +87,7 @@ chrome.runtime.onMessage.addListener(
             var feed = closest_parent_with_class(like_btn, '_4-u2');
             feed.scrollIntoView({block: "end", behavior: "smooth"});
             create_popup();
-            // put_reaction_on_all_post(request.action);
+            put_reaction_on_all_post(request.action);
         }
 });
 
