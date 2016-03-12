@@ -131,15 +131,17 @@ var create_popup = function(){
     btn_panel.appendChild(no_btn);
 
     // prepare and set CSS
+    const width = 300;
+    const height = 100;
     var like_btn_span_style = cssToStyleString({
-        'position' : 'fixed'
+        'position' : 'fixed',
+        'left' : (window.innerWidth - width) / 2 + 'px',
+        'top' : window.innerHeight / 2 + height + 100 + 'px',
     });
     like_btn_span.setAttribute('style', like_btn_span_style);
     // facebook button style
     yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft"; 
     no_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
-    const width = 300;
-    const height = 100;
     var like_btn_style = cssToStyleString({
         'position': 'fixed',
         'left': (window.innerWidth - width) / 2 + 'px',
