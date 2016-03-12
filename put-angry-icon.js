@@ -36,9 +36,6 @@ var create_put_reaction_action = function(reaction_id) {
             300
         );
         cnt += 1;
-        if (cnt > all_like_btns.length) {
-            clearInterval(action_id);
-        }
     };
 }
 
@@ -57,7 +54,15 @@ var put_reaction_on_all_post = function(reaction) {
         reaction_id = 5;
     }
     var put_reaction_action = create_put_reaction_action(reaction_id);
-    do_action_every_second(put_reaction_action);
+    var action_id = do_action_every_second(put_reaction_action);
+    // stop the action
+    var all_like_btns = document.querySelectorAll('a.UFILikeLink._48-k');
+    setTimeout(
+        function() {
+            clearInterval(action_id);
+        },
+        1000 * all_like_btns.length + 100
+    );
 }
 
 var cancel_all_emotion_on_post = function(){
@@ -66,10 +71,14 @@ var cancel_all_emotion_on_post = function(){
     var action_id = do_action_every_second(function() {
         cancel_btns[cnt].click();
         cnt += 1;
-        if (cnt > cancel_btns.length) {
-            clearInterval(action_id);
-        }
     });
+    // stop the action
+    setTimeout(
+        function() {
+            clearInterval(action_id);
+        },
+        1000 * cancel_btns.length + 100
+    );
 }
 
 chrome.runtime.onMessage.addListener(
@@ -86,8 +95,7 @@ chrome.runtime.onMessage.addListener(
             var like_btn = document.querySelector('a.UFILikeLink._48-k');
             var feed = closest_parent_with_class(like_btn, '_4-u2');
             feed.scrollIntoView({block: "end", behavior: "smooth"});
-            create_popup();
-            put_reaction_on_all_post(request.action);
+            create_popup(request.action);
         }
 });
 
@@ -110,7 +118,7 @@ var closest_parent_with_class = function (child, className) {
     return undefined;
 };
 
-var create_popup = function() {
+var create_popup = function(reaction) {
     var reaction_bar; // reaction bar is create iff user hover on like button
 
     // Get and create elements
@@ -146,8 +154,11 @@ var create_popup = function() {
         like_btn.removeChild(popup);
         response_btn_panel.removeChild(like_btn_span_clone);
     };
+    yes_btn.addEventListener("click", function(){
+        delete_popup();
+        put_reaction_on_all_post(reaction);
+    });
     no_btn.addEventListener("click", delete_popup);
-    yes_btn.addEventListener("click", delete_popup);
 
     // Append elements
     like_btn.insertBefore(popup, like_btn.firstChild);
