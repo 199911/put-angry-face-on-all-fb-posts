@@ -69,7 +69,11 @@ var cancel_all_emotion_on_post = function(){
     var cancel_btns = $('a.UFILikeLink.UFILinkBright');
     var cnt = 0;
     var action_id = do_action_every_second(function() {
-        cancel_btns[cnt].click();
+        cancel_btns[cnt].scrollIntoView();
+        setTimeout(
+            cancel_btns[cnt].click,
+            300
+        );
         cnt += 1;
     });
     // stop the action
