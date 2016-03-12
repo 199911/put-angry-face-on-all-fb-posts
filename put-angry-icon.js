@@ -70,6 +70,10 @@ chrome.runtime.onMessage.addListener(
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
         } else {
+            // scroll the first feed, _4-u2 is the class of the feed
+            var like_btn = document.querySelector('a.UFILikeLink._48-k');
+            var feed = closest_parent_with_class(like_btn, '_4-u2');
+            feed.scrollIntoView({block: "end", behavior: "smooth"});
             create_popup();
             // put_reaction_on_all_post(request.action);
         }
@@ -81,10 +85,20 @@ var cssToStyleString = function(cssObj) {
         styleString += key+': '+cssObj[key]+'; ';
     }
     return styleString;
-}
+};
 
-var create_popup = function(){
+var closest_parent_with_class = function (child, className) {
+    var elem = child;
+    while (elem.parentNode) {
+        elem = elem.parentNode;
+        if ( elem.className.indexOf(className) > -1 ) {
+            return elem;
+        }
+    }
+    return undefined;
+};
 
+var create_popup = function() {
     var reaction_bar; // reaction bar is create iff user hover on like button
 
     // Get and create elements
@@ -116,7 +130,7 @@ var create_popup = function(){
     });
     var delete_popup = function(){
         like_btn.style = '';
-        like_btn_span = '';
+        like_btn_span.style = '';
         like_btn.removeChild(popup);
         response_btn_panel.removeChild(like_btn_span_clone);
     };
