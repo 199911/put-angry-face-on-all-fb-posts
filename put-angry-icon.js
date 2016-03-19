@@ -51,7 +51,7 @@ var put_reaction_on_all_post = function(reaction) {
 }
 
 var cancel_all_emotion_on_post = function(){
-    var cancel_btns = $('a.UFILikeLink.UFILinkBright');
+    var cancel_btns = document.querySelectorAll('a.UFILikeLink.UFILinkBright');
     var cnt = 0;
     var action_id = do_action_every_second(function() {
         cancel_btns[cnt].scrollIntoView();
