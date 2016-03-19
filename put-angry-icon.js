@@ -1,18 +1,3 @@
-var scroll_to_bottom_feed = function() {
-    var position_y = -1;
-    var scroll_action_id = setInterval(
-        function(){ 
-            if (position_y !== scrollY){
-                position_y = scrollY;
-                scrollBy(0,99999);
-            } else {
-                clearInterval(scroll_action_id);
-            }
-        }, 
-        1000
-    );
-}
-
 var do_action_every_second = function(action) {
     var action_id = setInterval(
         action, 
@@ -88,9 +73,7 @@ var cancel_all_emotion_on_post = function(){
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         console.log(request);
-        if (request.action == "scroll") {
-            scroll_to_bottom_feed();
-        } else if (request.action == "show") {
+        if (request.action == "show") {
             show_emotion_bar();
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
