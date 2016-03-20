@@ -117,10 +117,9 @@ chrome.runtime.onMessage.addListener(
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
         } else {
-            // scroll the first feed, _4-u2 is the class of the feed
-            var like_btn = document.querySelector('a.UFILikeLink._48-k');
+            var like_btn = get_first_like_btn();
             like_btn.scrollIntoView();
-            scrollBy(0,-300);
+            scrollBy(0,-500);
             create_popup(request.action);
         }
 });
