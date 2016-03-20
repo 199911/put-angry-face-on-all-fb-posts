@@ -1,3 +1,26 @@
+// get first like button
+var get_first_like_btn = function(){
+    var timeline = document.querySelector('[role=main]');
+    return timeline.querySelector('a.UFILikeLink');
+}
+
+// get next like button
+var get_next_like_btn = function(current_btn) {
+    var timeline = document.querySelector('[role=main]');
+    var elem = current_btn.parentNode;
+    while( elem != timeline ) {
+        if (elem.nextElementSibling) {
+            var like_btn = elem.nextElementSibling.querySelector('a.UFILikeLink');
+            // only like btn in feed
+            if (like_btn && like_btn.parentNode.className==='_khz') {
+                return like_btn;
+            }
+        }
+        elem = elem.parentNode;
+    }
+    return false;
+}
+
 var do_action_every_second = function(action) {
     var action_id = setInterval(
         action, 
