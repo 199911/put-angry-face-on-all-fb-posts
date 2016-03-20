@@ -33,6 +33,10 @@ var do_action_every_second = function(action) {
     return action_id;
 }
 
+var has_class = function(elem, className) {
+    return elem.className.indexOf(className) > -1;
+}
+
 var create_put_reaction_action = function(reaction_id) {
     var all_like_btns = document.querySelectorAll('a.UFILikeLink._48-k');
     var cnt = 0;
@@ -94,23 +98,34 @@ var put_reaction_on_all_post = function(reaction) {
 }
 
 var cancel_all_emotion_on_post = function(){
-    var cancel_btns = document.querySelectorAll('a.UFILikeLink.UFILinkBright');
-    var cnt = 0;
-    var action_id = do_action_every_second(function() {
-        cancel_btns[cnt].scrollIntoView();
-        setTimeout(
-            cancel_btns[cnt].click,
-            300
-        );
-        cnt += 1;
-    });
-    // stop the action
-    setTimeout(
-        function() {
+    var like_button = undefined;
+    var action_id = do_action_every_second(function(){
+        if (!like_button) {
+            like_button = get_first_like_btn();
+        } else {
+            like_button = get_next_like_btn(like_button);
+        }
+        if (like_button ) {
+            like_button.scrollIntoView();
+            // scroll to let like_btn shown in the middle of screen
+            scrollBy(0,-100);
+            console.log(like_button);
+            if ( has_class(like_button, 'UFILinkBright') ) {
+                setTimeout(
+                    function(){
+                        like_button.addEventListener("click", function(event){
+                            event.preventDefault();
+                        });
+                        like_button.click();
+                    },
+                    300
+                );
+            }
+        } else {
+            console.log(action_id);
             clearInterval(action_id);
-        },
-        1000 * cancel_btns.length + 100
-    );
+        }
+    });
 }
 
 chrome.runtime.onMessage.addListener(
