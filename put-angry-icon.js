@@ -16,7 +16,11 @@ var get_next_like_btn = function(current_btn) {
                 return like_btn;
             }
         }
-        elem = elem.parentNode;
+        if ( elem.nextElementSibling ) {
+            elem = elem.nextElementSibling;
+        } else {
+            elem = elem.parentNode;
+        }
     }
     return false;
 }
