@@ -1,6 +1,6 @@
 # Put angry face on all feeds in your current facebook page
 
-![screenshot](https://github.com/199911/put-angry-face-on-all-fb-posts/raw/devel/store_screenshot.gif)
+![screenshot](https://github.com/199911/put-angry-face-on-all-fb-posts/raw/master/store_screenshot.gif)
 
 ## Usage
 
