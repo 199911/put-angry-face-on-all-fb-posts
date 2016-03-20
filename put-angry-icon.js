@@ -1,16 +1,28 @@
-var scroll_to_bottom_feed = function() {
-    var position_y = -1;
-    var scroll_action_id = setInterval(
-        function(){ 
-            if (position_y !== scrollY){
-                position_y = scrollY;
-                scrollBy(0,99999);
-            } else {
-                clearInterval(scroll_action_id);
+// get first like button
+var get_first_like_btn = function(){
+    var timeline = document.querySelector('[role=main]');
+    return timeline.querySelector('a.UFILikeLink');
+}
+
+// get next like button
+var get_next_like_btn = function(current_btn) {
+    var timeline = document.querySelector('[role=main]');
+    var elem = current_btn.parentNode;
+    while( elem != timeline ) {
+        if (elem.nextElementSibling) {
+            var like_btn = elem.nextElementSibling.querySelector('a.UFILikeLink');
+            // only like btn in feed
+            if (like_btn && like_btn.parentNode.className==='_khz') {
+                return like_btn;
             }
-        }, 
-        1000
-    );
+        }
+        if ( elem.nextElementSibling ) {
+            elem = elem.nextElementSibling;
+        } else {
+            elem = elem.parentNode;
+        }
+    }
+    return false;
 }
 
 var do_action_every_second = function(action) {
@@ -19,6 +31,10 @@ var do_action_every_second = function(action) {
         1000
     );
     return action_id;
+}
+
+var has_class = function(elem, className) {
+    return elem.className.indexOf(className) > -1;
 }
 
 var create_put_reaction_action = function(reaction_id) {
@@ -53,52 +69,76 @@ var put_reaction_on_all_post = function(reaction) {
     } else if (reaction === 'angry') {
         reaction_id = 5;
     }
-    var put_reaction_action = create_put_reaction_action(reaction_id);
-    var action_id = do_action_every_second(put_reaction_action);
-    // stop the action
-    var all_like_btns = document.querySelectorAll('a.UFILikeLink._48-k');
-    setTimeout(
-        function() {
+    var like_button = undefined;
+    var action_id = do_action_every_second(function(){
+        if (!like_button) {
+            like_button = get_first_like_btn();
+        } else {
+            like_button = get_next_like_btn(like_button);
+        }
+        if (like_button) {
+            like_button.scrollIntoView();
+            // scroll to let like_btn shown in the middle of screen
+            scrollBy(0,-100);
+            console.log(like_button);
+            var feed = closest_parent_with_class(like_button, '_4-u2');
+            var reaction_panel = feed.querySelector('._1oxj.uiLayer');
+            var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
+            setTimeout(
+                function(){
+                    reactions[reaction_id].click();
+                },
+                300
+            );
+        } else {
+            console.log(action_id);
             clearInterval(action_id);
-        },
-        1000 * all_like_btns.length + 100
-    );
+        }
+    });
 }
 
 var cancel_all_emotion_on_post = function(){
-    var cancel_btns = $('a.UFILikeLink.UFILinkBright');
-    var cnt = 0;
-    var action_id = do_action_every_second(function() {
-        cancel_btns[cnt].scrollIntoView();
-        setTimeout(
-            cancel_btns[cnt].click,
-            300
-        );
-        cnt += 1;
-    });
-    // stop the action
-    setTimeout(
-        function() {
+    var like_button = undefined;
+    var action_id = do_action_every_second(function(){
+        if (!like_button) {
+            like_button = get_first_like_btn();
+        } else {
+            like_button = get_next_like_btn(like_button);
+        }
+        if (like_button ) {
+            like_button.scrollIntoView();
+            // scroll to let like_btn shown in the middle of screen
+            scrollBy(0,-100);
+            console.log(like_button);
+            if ( has_class(like_button, 'UFILinkBright') ) {
+                setTimeout(
+                    function(){
+                        like_button.addEventListener("click", function(event){
+                            event.preventDefault();
+                        });
+                        like_button.click();
+                    },
+                    300
+                );
+            }
+        } else {
+            console.log(action_id);
             clearInterval(action_id);
-        },
-        1000 * cancel_btns.length + 100
-    );
+        }
+    });
 }
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         console.log(request);
-        if (request.action == "scroll") {
-            scroll_to_bottom_feed();
-        } else if (request.action == "show") {
+        if (request.action == "show") {
             show_emotion_bar();
         } else if (request.action == "cancel") {
             cancel_all_emotion_on_post();
         } else {
-            // scroll the first feed, _4-u2 is the class of the feed
-            var like_btn = document.querySelector('a.UFILikeLink._48-k');
-            var feed = closest_parent_with_class(like_btn, '_4-u2');
-            feed.scrollIntoView({block: "end", behavior: "smooth"});
+            var like_btn = get_first_like_btn();
+            like_btn.scrollIntoView();
+            scrollBy(0,-500);
             create_popup(request.action);
         }
 });
@@ -126,8 +166,8 @@ var create_popup = function(reaction) {
     var reaction_bar; // reaction bar is create iff user hover on like button
 
     // Get and create elements
-    var like_btn = document.querySelector('a.UFILikeLink._48-k');
-    var like_btn_span = document.querySelector('a.UFILikeLink._48-k').parentNode.parentNode
+    var like_btn = get_first_like_btn();
+    var like_btn_span = like_btn.parentNode.parentNode;
     var like_btn_span_clone = like_btn_span.cloneNode(true);
     var response_btn_panel = like_btn_span.parentNode;
     // duplicate the like_btn_span to fill in a hole
