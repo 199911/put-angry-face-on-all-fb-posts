@@ -86,7 +86,14 @@ var put_reaction_on_all_post = function(reaction) {
             var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
             setTimeout(
                 function(){
-                    reactions[reaction_id].click();
+                    for ( var i = 0; i < reactions.length; ++i ) {
+                        var reaction = reactions[i];
+                        var reactionDiv = reaction.querySelector('._39m');
+                        if ( reactionDiv.dataset.reaction == reaction_id ) {
+                            reaction.click();
+                        }
+                    }
+                    
                 },
                 300
             );
