@@ -57,17 +57,19 @@ var create_put_reaction_action = function(reaction_id) {
 
 var put_reaction_on_all_post = function(reaction) {
     if (reaction === 'like') {
-        reaction_id = 0;
-    } else if (reaction === 'love') {
         reaction_id = 1;
-    } else if (reaction === 'haha') {
+    } else if (reaction === 'love') {
         reaction_id = 2;
+    } else if (reaction === 'haha') {
+        reaction_id = 4;
     } else if (reaction === 'wow') {
         reaction_id = 3;
     } else if (reaction === 'sad') {
-        reaction_id = 4;
+        reaction_id = 7;
     } else if (reaction === 'angry') {
-        reaction_id = 5;
+        reaction_id = 8;
+    } else if (reaction === 'thankful') {
+        reaction_id = 11;
     }
     var like_button = undefined;
     var action_id = do_action_every_second(function(){
@@ -86,7 +88,14 @@ var put_reaction_on_all_post = function(reaction) {
             var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
             setTimeout(
                 function(){
-                    reactions[reaction_id].click();
+                    for ( var i = 0; i < reactions.length; ++i ) {
+                        var reaction = reactions[i];
+                        var reactionDiv = reaction.querySelector('._39m');
+                        if ( reactionDiv.dataset.reaction == reaction_id ) {
+                            reaction.click();
+                        }
+                    }
+                    
                 },
                 300
             );
