@@ -3,7 +3,7 @@
 
   "name": "Facebook Auto Angry",
   "description": "This give reaction to all posts in current facebook page",
-  "version": "1.3",
+  "version": "1.4",
 
   "browser_action": {
     "default_popup": "popup.html",
