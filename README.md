@@ -5,7 +5,7 @@
 
 ## Usage
 
-1. Install the chrome plugin: https://chrome.google.com/webstore/developer/edit/dgnmahcjhdlpdobcabankkjidigcnifb
+1. Install the chrome plugin: https://chrome.google.com/webstore/detail/facebook-auto-angry/dgnmahcjhdlpdobcabankkjidigcnifb
 2. Click the icon on top right hand corner
 3. Select you reaction you want.
 4. Click yes in the confirmation window
