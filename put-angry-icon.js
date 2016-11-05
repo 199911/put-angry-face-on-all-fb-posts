@@ -27,7 +27,7 @@ var get_next_like_btn = function(current_btn) {
 
 var do_action_every_second = function(action) {
     var action_id = setInterval(
-        action, 
+        action,
         1000
     );
     return action_id;
@@ -68,8 +68,6 @@ var put_reaction_on_all_post = function(reaction) {
         reaction_id = 7;
     } else if (reaction === 'angry') {
         reaction_id = 8;
-    } else if (reaction === 'thankful') {
-        reaction_id = 11;
     }
     var like_button = undefined;
     var action_id = do_action_every_second(function(){
@@ -95,7 +93,7 @@ var put_reaction_on_all_post = function(reaction) {
                             reaction.click();
                         }
                     }
-                    
+
                 },
                 300
             );
@@ -181,7 +179,7 @@ var create_popup = function(reaction) {
     var response_btn_panel = like_btn_span.parentNode;
     // duplicate the like_btn_span to fill in a hole
     response_btn_panel.insertBefore(like_btn_span_clone,response_btn_panel.firstChild);
-    var popup = document.createElement("div"); 
+    var popup = document.createElement("div");
     var message = document.createElement("h1");
     message.appendChild(
         document.createTextNode("Do you want to fire reaction?")
@@ -230,7 +228,7 @@ var create_popup = function(reaction) {
     });
     like_btn_span.setAttribute('style', like_btn_span_style);
     // facebook button style
-    yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft"; 
+    yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
     no_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
     var like_btn_style = cssToStyleString({
         'position': 'fixed',
