@@ -27,7 +27,7 @@ var get_next_like_btn = function(current_btn) {
 
 var do_action_every_second = function(action) {
     var action_id = setInterval(
-        action, 
+        action,
         1000
     );
     return action_id;
@@ -37,40 +37,7 @@ var has_class = function(elem, className) {
     return elem.className.indexOf(className) > -1;
 }
 
-var create_put_reaction_action = function(reaction_id) {
-    var all_like_btns = document.querySelectorAll('a.UFILikeLink._48-k');
-    var cnt = 0;
-    return function() {
-        var feed = closest_parent_with_class(all_like_btns[cnt], '_4-u2');
-        feed.scrollIntoView();
-        var reaction_panel = feed.querySelector('._1oxj.uiLayer');
-        var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
-        setTimeout(
-            function(){
-                reactions[reaction_id].click();
-            },
-            300
-        );
-        cnt += 1;
-    };
-}
-
 var put_reaction_on_all_post = function(reaction) {
-    if (reaction === 'like') {
-        reaction_id = 1;
-    } else if (reaction === 'love') {
-        reaction_id = 2;
-    } else if (reaction === 'haha') {
-        reaction_id = 4;
-    } else if (reaction === 'wow') {
-        reaction_id = 3;
-    } else if (reaction === 'sad') {
-        reaction_id = 7;
-    } else if (reaction === 'angry') {
-        reaction_id = 8;
-    } else if (reaction === 'thankful') {
-        reaction_id = 11;
-    }
     var like_button = undefined;
     var action_id = do_action_every_second(function(){
         if (!like_button) {
@@ -82,20 +49,18 @@ var put_reaction_on_all_post = function(reaction) {
             like_button.scrollIntoView();
             // scroll to let like_btn shown in the middle of screen
             scrollBy(0,-100);
-            console.log(like_button);
             var feed = closest_parent_with_class(like_button, '_4-u2');
-            var reaction_panel = feed.querySelector('._1oxj.uiLayer');
-            var reactions = reaction_panel.querySelectorAll('._iu- ._iuw');
+            var reaction_btns = {
+                like: feed.querySelector('span[aria-label="Like"]'),
+                love: feed.querySelector('span[aria-label="Love"]'),
+                haha: feed.querySelector('span[aria-label="Haha"]'),
+                wow: feed.querySelector('span[aria-label="Wow"]'),
+                sad: feed.querySelector('span[aria-label="Sad"]'),
+                angry: feed.querySelector('span[aria-label="Angry"]')
+            };
             setTimeout(
-                function(){
-                    for ( var i = 0; i < reactions.length; ++i ) {
-                        var reaction = reactions[i];
-                        var reactionDiv = reaction.querySelector('._39m');
-                        if ( reactionDiv.dataset.reaction == reaction_id ) {
-                            reaction.click();
-                        }
-                    }
-                    
+                function() {
+                    reaction_btns[reaction].click();
                 },
                 300
             );
@@ -181,7 +146,7 @@ var create_popup = function(reaction) {
     var response_btn_panel = like_btn_span.parentNode;
     // duplicate the like_btn_span to fill in a hole
     response_btn_panel.insertBefore(like_btn_span_clone,response_btn_panel.firstChild);
-    var popup = document.createElement("div"); 
+    var popup = document.createElement("div");
     var message = document.createElement("h1");
     message.appendChild(
         document.createTextNode("Do you want to fire reaction?")
@@ -209,7 +174,12 @@ var create_popup = function(reaction) {
     };
     yes_btn.addEventListener("click", function(){
         delete_popup();
-        put_reaction_on_all_post(reaction);
+        setTimeout(
+            function(){
+                put_reaction_on_all_post(reaction);
+            },
+            3000
+        );
     });
     no_btn.addEventListener("click", delete_popup);
 
@@ -230,7 +200,7 @@ var create_popup = function(reaction) {
     });
     like_btn_span.setAttribute('style', like_btn_span_style);
     // facebook button style
-    yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft"; 
+    yes_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
     no_btn.className = "_1mf7 _4jy0 _4jy3 _4jy1 _51sy selected _42ft";
     var like_btn_style = cssToStyleString({
         'position': 'fixed',
