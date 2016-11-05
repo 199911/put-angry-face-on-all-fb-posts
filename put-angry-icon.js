@@ -174,7 +174,12 @@ var create_popup = function(reaction) {
     };
     yes_btn.addEventListener("click", function(){
         delete_popup();
-        put_reaction_on_all_post(reaction);
+        setTimeout(
+            function(){
+                put_reaction_on_all_post(reaction);
+            },
+            3000
+        );
     });
     no_btn.addEventListener("click", delete_popup);
 
